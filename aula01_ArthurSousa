@@ -1,0 +1,61 @@
+CREATE SCHEMA IF NOT EXISTS Funcionarios DEFAULT CHARACTER SET utf8;
+
+USE Funcionarios;
+
+CREATE TABLE IF NOT EXISTS Funcionarios (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    salario DECIMAL(10, 2),
+    departamento VARCHAR(100) -- Adicionando a coluna 'departamento' diretamente na criação da tabela
+);
+
+INSERT INTO Funcionarios (nome, salario, departamento)
+VALUES 
+('João', 3500, 'TI'),
+('Maria', 2800, 'Marketing'),
+('José', 4000, 'TI'),
+('Ana', 2500, 'Vendas'),
+('Carlos', 5000, 'Marketing');
+
+SELECT nome, salario 
+FROM Funcionarios 
+WHERE salario > 3000;
+
+SELECT nome, salario
+FROM Funcionarios
+ORDER BY nome ASC;
+
+SELECT 
+    COUNT(*) AS Total_funcionarios,
+    AVG(salario) AS media_salarial,
+    SUM(salario) AS soma_salarios
+FROM Funcionarios;
+
+
+SELECT 
+    departamento,
+    COUNT(*) AS total_funcionarios,
+    AVG(salario) AS media_salarial
+FROM Funcionarios 
+GROUP BY departamento 
+HAVING COUNT(*) > 1;
+
+SELECT nome, salario
+FROM Funcionarios
+WHERE salario > (
+    SELECT AVG(salario) 
+    FROM Funcionarios
+);
+
+SELECT nome AS Nome, salario AS Salario
+FROM Funcionarios;
+
+
+SELECT nome, salario, departamento
+FROM Funcionarios f
+WHERE salario > (
+    SELECT AVG(salario)
+    FROM Funcionarios
+    WHERE departamento = f.departamento
+);
+
